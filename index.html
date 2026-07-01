@@ -160,7 +160,16 @@
     font-size:22px;
   }
   .mobile-panel .header-phone{ display:block; margin-bottom:20px; font-size:17px; }
-  .mobile-panel .header-cta{ width:100%; padding:16px; font-size:14.5px; }
+  .mobile-panel .header-cta{
+    width:100%;
+    padding:16px;
+    font-size:14.5px;
+    color:var(--cream);
+    font-family:'Inter',sans-serif;
+    justify-content:center;
+    text-align:center;
+    border-bottom:none;
+  }
 
   @media (max-width:1080px){
     .header-inner{ padding:18px 32px; }
@@ -382,14 +391,26 @@
   .ticket-desc strong{ color:var(--ink); font-weight:600;}
 
   /* responsive */
+  @media (max-width:1080px){
+    .hero-grid{
+      grid-template-columns:1fr;
+      min-height:calc(100vh - 81px);
+    }
+    .hero-left{ order:1; }
+    .hero-right{
+      order:2;
+      min-height:360px;
+    }
+  }
+
   @media (max-width:880px){
     .hero-grid{
       grid-template-columns:1fr;
       min-height:calc(100vh - 65px);
     }
-    .hero-left{ padding:52px 28px 40px; order:2; }
+    .hero-left{ padding:52px 28px 40px; order:1; }
     .headline{ font-size:38px; }
-    .hero-right{ min-height:340px; order:1; }
+    .hero-right{ min-height:340px; order:2; }
     .trust-row{ max-width:100%; }
     .ticket{ width:250px; }
   }
