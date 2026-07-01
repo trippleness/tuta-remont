@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --cream:#F7F4EE;
+    --ink:#211F1A;
+    --ink-soft:#5B584F;
+    --sage:#728A6C;
+    --sage-deep:#4E6349;
+    --rust:#C15A34;
+    --line:#DAD5C8;
+    --card:#FFFFFF;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{ margin:0; padding:0; width:100%; }
+
+  /* HEADER */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--cream);
+    border-bottom:1px solid var(--line);
+    font-family:'Inter',sans-serif;
+  }
+  .header-inner{
+    max-width:1400px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 72px;
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+    white-space:nowrap;
+    text-decoration:none;
+  }
+  .logo span{ color:var(--sage-deep); }
+
+  .nav-menu{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    list-style:none;
+    margin:0;
+    padding:0;
+  }
+  .nav-menu a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:14.5px;
+    font-weight:500;
+    transition:color .15s ease;
+  }
+  .nav-menu a:hover{ color:var(--sage-deep); }
+  .nav-menu a:focus-visible{ outline:2px solid var(--sage-deep); outline-offset:3px; }
+
+  .header-actions{
+    display:flex;
+    align-items:center;
+    gap:26px;
+  }
+  .header-phone{
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--ink);
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .header-cta{
+    background:var(--ink);
+    color:var(--cream);
+    border:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 22px;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    border-radius:3px;
+    cursor:pointer;
+    white-space:nowrap;
+    text-decoration:none;
+    transition:background .2s ease;
+  }
+  .header-cta:hover{ background:var(--sage-deep); }
+
+  .burger{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:32px;
+    height:32px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+  }
+  .burger span{
+    display:block;
+    width:100%;
+    height:2px;
+    background:var(--ink);
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .burger[aria-expanded="true"] span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .burger[aria-expanded="true"] span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .mobile-panel{
+    display:none;
+    position:fixed;
+    inset:0;
+    top:73px;
+    background:var(--cream);
+    z-index:40;
+    padding:36px 32px;
+    transform:translateY(-12px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .22s ease, transform .22s ease;
+  }
+  .mobile-panel.open{
+    display:block;
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .mobile-panel ul{
+    list-style:none;
+    margin:0 0 32px 0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .mobile-panel a{
+    display:block;
+    padding:16px 4px;
+    border-bottom:1px solid var(--line);
+    color:var(--ink);
+    text-decoration:none;
+    font-family:'Fraunces',serif;
+    font-size:22px;
+  }
+  .mobile-panel .header-phone{ display:block; margin-bottom:20px; font-size:17px; }
+  .mobile-panel .header-cta{ width:100%; padding:16px; font-size:14.5px; }
+
+  @media (max-width:1080px){
+    .header-inner{ padding:18px 32px; }
+    .nav-menu{ gap:26px; }
+  }
+
+  @media (max-width:880px){
+    .header-inner{ padding:16px 20px; }
+    .nav-menu, .header-phone{ display:none; }
+    .header-actions .header-cta{ display:none; }
+    .burger{ display:flex; }
+  }
+
+  .hero-wrap{
+    background:var(--cream);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    padding:0;
+    width:100%;
+    overflow:hidden;
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    min-height:calc(100vh - 89px);
+  }
+
+  /* LEFT */
+  .hero-left{
+    padding:72px 64px 64px 72px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--sage-deep);
+    margin-bottom:26px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;
+    height:1px;
+    background:var(--sage-deep);
+  }
+
+  .headline{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:56px;
+    line-height:1.06;
+    letter-spacing:-0.01em;
+    margin:0 0 24px 0;
+    max-width:580px;
+  }
+  .headline em{
+    font-style:italic;
+    color:var(--sage-deep);
+  }
+
+  .sub{
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:460px;
+    margin:0 0 40px 0;
+  }
+
+  .cta-row{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    margin-bottom:56px;
+  }
+
+  .cta-btn{
+    background:var(--ink);
+    color:var(--cream);
+    border:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:17px 30px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    border-radius:3px;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .cta-btn:hover{ background:var(--sage-deep); transform:translateY(-1px); }
+  .cta-btn:focus-visible{ outline:2px solid var(--sage-deep); outline-offset:3px; }
+
+  .cta-note{
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+
+  .trust-row{
+    display:flex;
+    gap:0;
+    border-top:1px solid var(--line);
+    max-width:520px;
+  }
+  .trust-item{
+    flex:1;
+    padding:18px 20px 0 0;
+    border-right:1px solid var(--line);
+  }
+  .trust-item:last-child{ border-right:none; padding-right:0; }
+  .trust-num{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    font-weight:500;
+    color:var(--sage-deep);
+    display:block;
+    margin-bottom:4px;
+  }
+  .trust-label{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    line-height:1.4;
+  }
+
+  /* RIGHT */
+  .hero-right{
+    position:relative;
+    background:linear-gradient(155deg, #EFEAE0 0%, #E4E0D2 55%, #D9DCC9 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .blueprint{
+    position:absolute;
+    inset:0;
+    opacity:.55;
+  }
+
+  .ticket{
+    position:relative;
+    z-index:2;
+    background:var(--card);
+    width:300px;
+    padding:28px 26px 24px;
+    box-shadow:0 24px 60px -18px rgba(33,31,26,.35);
+    transform:rotate(-3deg);
+    border-radius:2px;
+  }
+  .ticket::before, .ticket::after{
+    content:"";
+    position:absolute;
+    width:22px; height:22px;
+    background:var(--cream);
+    border-radius:50%;
+    top:50%;
+    transform:translateY(-50%);
+    box-shadow:0 0 0 1px var(--line) inset;
+  }
+  .ticket::before{ left:-11px; }
+  .ticket::after{ right:-11px; }
+
+  .ticket-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:1.5px dashed var(--line);
+    padding-bottom:16px;
+    margin-bottom:16px;
+  }
+  .ticket-label{
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:600;
+  }
+  .ticket-seal{
+    font-family:'Fraunces',serif;
+    font-size:12px;
+    font-weight:600;
+    color:var(--rust);
+    border:1.5px solid var(--rust);
+    padding:4px 9px;
+    border-radius:20px;
+    letter-spacing:.05em;
+    transform:rotate(4deg);
+  }
+
+  .ticket-price{
+    font-family:'Fraunces',serif;
+    font-size:34px;
+    color:var(--ink);
+    margin:0 0 6px 0;
+  }
+  .ticket-price span{
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .ticket-desc{
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.55;
+    margin:0;
+  }
+  .ticket-desc strong{ color:var(--ink); font-weight:600;}
+
+  /* responsive */
+  @media (max-width:880px){
+    .hero-grid{
+      grid-template-columns:1fr;
+      min-height:calc(100vh - 65px);
+    }
+    .hero-left{ padding:52px 28px 40px; order:2; }
+    .headline{ font-size:38px; }
+    .hero-right{ min-height:340px; order:1; }
+    .trust-row{ max-width:100%; }
+    .ticket{ width:250px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .cta-btn{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="logo">Tuta<span>Ремонт</span></a>
+
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#about">О компании</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#portfolio">Портфолио</a></li>
+        <li><a href="#reviews">Отзывы</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="tel:+79779075158" class="header-phone">+7 977 907 51 58</a>
+      <a href="https://t.me/agresyrf" class="header-cta" target="_blank" rel="noopener noreferrer">Оставить заявку</a>
+      <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobilePanel">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <ul>
+      <li><a href="#about">О компании</a></li>
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#portfolio">Портфолио</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#contacts">Контакты</a></li>
+    </ul>
+    <a href="tel:+79779075158" class="header-phone">+7 977 907 51 58</a>
+    <a href="https://t.me/agresyrf" class="header-cta" target="_blank" rel="noopener noreferrer">Оставить заявку</a>
+  </div>
+</header>
+
+<div class="hero-wrap">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="eyebrow">Ремонт под ключ · Москва</div>
+      <h1 class="headline">Цена в договоре — <em>цена по факту.</em></h1>
+      <p class="sub">Фиксируем смету до начала работ. Если по ходу ремонта что-то усложнится — это наша проблема, а не доплата в вашем чеке.</p>
+
+      <div class="cta-row">
+        <a href="https://t.me/agresyrf" class="cta-btn" target="_blank" rel="noopener noreferrer">Получить точный расчёт</a>
+        <span class="cta-note">Ответим в течение дня</span>
+      </div>
+
+      <div class="trust-row">
+        <div class="trust-item">
+          <span class="trust-num">13 лет</span>
+          <span class="trust-label">на рынке ремонта и&nbsp;строительства</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-num">0 ₽</span>
+          <span class="trust-label">доплат сверх согласованной сметы</span>
+        </div>
+        <div class="trust-item">
+          <span class="trust-num">1</span>
+          <span class="trust-label">договор фиксирует цену от старта до сдачи</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <svg class="blueprint" viewBox="0 0 500 640" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="#728A6C" stroke-width="1">
+          <rect x="60" y="80" width="380" height="480" />
+          <line x1="60" y1="280" x2="440" y2="280" />
+          <line x1="250" y1="80" x2="250" y2="280" />
+          <line x1="60" y1="440" x2="300" y2="440" />
+          <line x1="300" y1="280" x2="300" y2="600" />
+          <rect x="90" y="110" width="60" height="14" />
+          <circle cx="390" cy="180" r="26" />
+          <path d="M390 154 v52 M364 180 h52" stroke-width=".6"/>
+        </g>
+      </svg>
+
+      <div class="ticket">
+        <div class="ticket-top">
+          <span class="ticket-label">Смета № 0412</span>
+          <span class="ticket-seal">ФИКС</span>
+        </div>
+        <p class="ticket-price">от 20 000 ₽ <span>/ м²</span></p>
+        <p class="ticket-desc"><strong>Без изменений</strong> в течение всего ремонта — материалы и этапы согласованы заранее, доплат нет.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobilePanel = document.getElementById('mobilePanel');
+
+  burgerBtn.addEventListener('click', () => {
+    const isOpen = mobilePanel.classList.toggle('open');
+    burgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  mobilePanel.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobilePanel.classList.remove('open');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
+
+</body>
+</html>
